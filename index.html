@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- --- SEO & GOOGLE OPTIMIERUNG --- -->
+    <title>Iron Eagles | Deutsche Squad & Arma Reforger Community</title>
+    <meta name="description" content="Iron Eagles: Die deutsche Community (16-35) für Squad und Arma Reforger. Taktisches Gameplay, Anfänger-Academy und entspannte Runden. Jetzt Discord beitreten!">
+    <meta name="keywords" content="Squad, Squad Deutschland, Arma Reforger, Arma Reforger Deutsch, Milsim, Clan, Community, Taktik Shooter, Iron Eagles, Gaming Community, Anfängerfreundlich">
+    <meta name="author" content="Iron Eagles Community">
+    <meta name="robots" content="index, follow">
+
+    <!-- --- DISCORD & SOCIAL MEDIA VORSCHAU (Open Graph) --- -->
+    <meta property="og:title" content="Iron Eagles | Wir sind zurück.">
+    <meta property="og:description" content="Nach 3 Jahren Pause: Die Heimat für Squad & Arma Reforger Spieler. Komm ins Briefing!">
+    <meta property="og:image" content="img/Iron eagles.jpg"> <!-- Das Bild, das in Discord erscheint -->
+    <meta property="og:type" content="website">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CORE VARIABLES --- */
+        :root {
+            --primary: #5D7347; /* Dein Olivgrün */
+            --primary-glow: rgba(93, 115, 71, 0.6);
+            --dark: #0a0b0d;
+            --glass: rgba(15, 16, 18, 0.9);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text: #ffffff;
+            --text-muted: #cccccc;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--dark);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1.5px; }
+
+        /* --- PARALLAX BACKGROUNDS --- */
+        .bg-container { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -1; overflow: hidden; }
+        .bg-layer {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover; background-position: center;
+            opacity: 0; transition: opacity 1.5s ease-in-out, transform 10s ease;
+            transform: scale(1.1);
+            filter: brightness(0.5); 
+        }
+        .bg-layer.active { opacity: 1; transform: scale(1); }
+
+        /* BILDER ZUWEISUNG */
+        #bg-1 { background-image: url('img/soldier-military-machine-gun-war-silhouette-black-2560x1440-6596.jpg'); } 
+        #bg-2 { background-image: url('img/humvee_action.jpg'); } 
+        #bg-3 { background-image: url('img/base_return.jpg'); }
+
+        /* --- NAV --- */
+        nav {
+            position: fixed; width: 100%; top: 0; padding: 20px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; background: linear-gradient(to bottom, rgba(0,0,0,0.95), transparent);
+        }
+        .logo-text { font-size: 1.5rem; font-weight: 900; color: #fff; display: flex; align-items: center; }
+        .logo-img { height: 50px; margin-right: 15px; vertical-align: middle; border-radius: 50%; border: 2px solid var(--primary); }
+        
+        .nav-links a {
+            color: #fff; text-decoration: none; margin-left: 25px;
+            font-weight: 600; text-transform: uppercase; font-size: 0.85rem;
+            position: relative; transition: 0.3s;
+        }
+        .nav-links a:hover { color: var(--primary); }
+
+        /* --- SECTIONS --- */
+        section { min-height: 100vh; padding: 100px 10%; display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 10; }
+
+        /* --- HERO --- */
+        header { align-items: flex-start; text-align: left; }
+        header h1 { font-size: 4.5rem; line-height: 1.1; margin-bottom: 20px; text-shadow: 0 10px 30px rgba(0,0,0,0.8); opacity: 0; animation: fadeUp 1s ease-out forwards 0.5s; }
+        header p { 
+            font-size: 1.2rem; color: #ddd; margin-bottom: 40px; max-width: 650px; 
+            border-left: 4px solid var(--primary); padding-left: 25px; 
+            background: linear-gradient(90deg, rgba(0,0,0,0.6), transparent);
+            opacity: 0; animation: fadeUp 1s ease-out forwards 0.8s;
+        }
+
+        /* --- BUTTONS --- */
+        .btn {
+            padding: 15px 40px; background-color: transparent; color: white;
+            text-decoration: none; font-weight: bold; border-radius: 50px;
+            text-transform: uppercase; transition: all 0.3s ease; display: inline-flex;
+            align-items: center; gap: 10px; border: 2px solid var(--primary);
+            backdrop-filter: blur(5px);
+        }
+        .btn:hover { background-color: var(--primary); box-shadow: 0 0 25px var(--primary-glow); transform: translateY(-3px); }
+        .btn-discord { background-color: var(--primary); border-color: var(--primary); margin-right: 15px; }
+        .btn-discord:hover { background-color: #4a5c39; }
+
+        /* --- GLASS CARDS --- */
+        .glass-card {
+            background: var(--glass); backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border); border-radius: 20px;
+            padding: 50px; box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            width: 100%; margin: 0 auto;
+        }
+
+        /* --- MISSION SECTION --- */
+        .mission-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+        .stats-row { display: flex; gap: 40px; margin-top: 30px; }
+        .stat-item h3 { font-size: 2.5rem; color: var(--primary); margin-bottom: 0; }
+        .stat-item p { font-size: 0.8rem; text-transform: uppercase; color: #888; }
+
+        /* --- ACADEMY SECTION --- */
+        .academy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+        .kit-showcase { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .kit-item {
+            background: rgba(255,255,255,0.05); border-radius: 10px; padding: 15px;
+            text-align: center; transition: 0.3s; border: 1px solid transparent;
+        }
+        .kit-item:hover { border-color: var(--primary); transform: translateY(-5px); background: rgba(93, 115, 71, 0.2); }
+        .kit-item img { width: 60px; height: 60px; object-fit: contain; margin-bottom: 10px; }
+        .kit-item span { display: block; font-size: 0.8rem; font-weight: bold; color: #aaa; }
+
+        /* --- CHAOS SECTION --- */
+        .chaos-container {
+            display: flex; align-items: center; gap: 40px;
+            background: linear-gradient(135deg, rgba(20,20,20,0.95), rgba(40,40,40,0.95));
+            padding: 30px; border-radius: 20px; border-left: 5px solid #d4af37;
+            margin-top: 50px;
+        }
+        .chaos-img img { 
+            width: 250px; border-radius: 10px; transform: rotate(-5deg); 
+            border: 5px solid #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: 0.3s;
+        }
+        .chaos-img img:hover { transform: rotate(0deg) scale(1.1); }
+
+        /* --- GAMES SECTION --- */
+        .games-grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .game-detail-card {
+            background: rgba(10, 10, 10, 0.85); border: 1px solid #333; padding: 40px; 
+            border-radius: 15px; transition: 0.3s; position: relative; overflow: hidden;
+        }
+        .game-detail-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: var(--primary); }
+        .game-detail-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        .game-detail-card h3 { font-size: 2rem; margin-bottom: 10px; display: flex; align-items: center; gap: 15px; color: #fff; }
+        .game-tag { font-size: 0.8rem; background: var(--primary); padding: 3px 10px; border-radius: 4px; color: #fff; vertical-align: middle; }
+        .game-desc { color: #bbb; margin-bottom: 25px; font-size: 1rem; }
+        .feature-list { list-style: none; margin-top: 20px; }
+        .feature-list li { margin-bottom: 15px; padding-left: 30px; position: relative; color: #ddd; }
+        .feature-list li::before { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 0; color: var(--primary); }
+        .feature-list strong { color: #fff; font-weight: 600; }
+
+        /* --- FOOTER --- */
+        footer { background: #050505; padding: 50px 10%; text-align: center; border-top: 1px solid #222; }
+
+        /* --- ANIMATIONS --- */
+        .reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        span.highlight { color: var(--primary); }
+
+        /* --- MOBILE --- */
+        @media (max-width: 900px) {
+            header h1 { font-size: 3rem; }
+            .mission-grid, .academy-grid, .games-grid-layout, .chaos-container { grid-template-columns: 1fr; flex-direction: column; }
+            .nav-links { display: none; }
+            .kit-showcase { grid-template-columns: repeat(2, 1fr); }
+            .chaos-img img { width: 100%; max-width: 300px; margin-bottom: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BACKGROUNDS -->
+    <div class="bg-container">
+        <!-- 1. Start: Briefing & Mission -->
+        <div class="bg-layer active" id="bg-1"></div>
+        <!-- 2. Action: Academy & Games -->
+        <div class="bg-layer" id="bg-2"></div>
+        <!-- 3. Ende: Join -->
+        <div class="bg-layer" id="bg-3"></div>
+    </div>
+
+    <!-- NAV -->
+    <nav>
+        <div class="logo-text">
+            <img src="img/logo.jpg" alt="Iron Eagles" class="logo-img">
+            IRON <span class="highlight" style="margin-left: 5px;">EAGLES</span>
+        </div>
+        <div class="nav-links">
+            <a href="#mission">Mission</a>
+            <a href="#academy">Academy</a>
+            <a href="#games">Operations</a>
+            <a href="#join">Rekrutierung</a>
+            <a href="#support" style="color: var(--primary);">Kriegskasse</a>
+        </div>
+    </nav>
+
+    <!-- HEADER -->
+    <header>
+        <h1>Wir sind <span class="highlight">Zurück.</span></h1>
+        <p>
+            Nach 3 Jahren Pause erhebt sich der Adler wieder. 
+            <strong>Alter 16 - 35.</strong> Taktik, Teamplay und der nötige Humor, wenn der Logi mal wieder fliegt.
+            Deine Heimat für Squad & Arma Reforger.
+        </p>
+        <div style="opacity: 0; animation: fadeUp 1s ease-out forwards 1s;">
+            <a href="https://discord.gg/efBWySqm9M" class="btn btn-discord">
+                <i class="fab fa-discord"></i> Discord Joinen
+            </a>
+            <a href="#mission" class="btn">
+                <i class="fas fa-arrow-down"></i> Briefing Starten
+            </a>
+        </div>
+    </header>
+
+    <!-- MISSION SECTION -->
+    <section id="mission">
+        <div class="glass-card reveal">
+            <div class="mission-grid">
+                <div>
+                    <h2>Das <span class="highlight">Comeback</span></h2>
+                    <p style="font-size: 1.1rem; margin-bottom: 20px; color: #fff;">
+                        Wir kennen die Zeiten von leeren Servern und vollen Squads. Jetzt greifen wir wieder an – besser organisiert und entspannter als je zuvor.
+                    </p>
+                    <p style="color: #ccc;">
+                        Wir sind keine MilSim-Hardliner, die dich anschreien, wenn du das falsche Kit nimmst. 
+                        Aber wir hassen es zu verlieren, auch wenn wir es meistens tun. 
+                        Deine Stimme zählt: Wir hören auf Suggestions und entwickeln den Server gemeinsam.
+                    </p>
+                    
+                    <div class="stats-row">
+                        <div class="stat-item"><h3>3+</h3><p>Jahre Erfahrung</p></div>
+                        <div class="stat-item"><h3>16-35</h3><p>Altersspanne</p></div>
+                        <div class="stat-item"><h3>100%</h3><p>Community</p></div>
+                    </div>
+                </div>
+                <!-- Adler Logo als Hintergrund Deko -->
+                <div style="text-align: center; opacity: 0.8;">
+                    <img src="img/logo.jpg" style="width: 300px; border-radius: 50%; box-shadow: 0 0 50px rgba(0,0,0,0.5);">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ACADEMY -->
+    <section id="academy">
+        <div class="glass-card reveal">
+            <div class="academy-grid">
+                <!-- TEXT -->
+                <div>
+                    <h2>Iron <span class="highlight">Academy</span></h2>
+                    <p style="font-size: 1.1rem; margin-bottom: 20px; color: #fff;">
+                        Neu in Squad oder Arma? Keine Panik.
+                    </p>
+                    <p style="color: #ccc; margin-bottom: 20px;">
+                        Du hast Squad gerade im Sale gekauft und weißt nicht, was eine FOB ist? 
+                        Unsere Veteranen bringen es dir bei – <strong>ganz ohne Drill und Anschreien.</strong>
+                    </p>
+                    <p style="color: #ccc;">
+                        <i class="fas fa-check" style="color: var(--primary);"></i> Individuelles 1-zu-1 Training<br>
+                        <i class="fas fa-check" style="color: var(--primary);"></i> Erfahrene Squad Leads, die erklären<br>
+                        <i class="fas fa-check" style="color: var(--primary);"></i> Keine "dummen Fragen"
+                    </p>
+                </div>
+
+                <!-- KIT SHOWCASE -->
+                <div class="kit-showcase">
+                    <div class="kit-item">
+                        <img src="img/Icon_Squad_Leader_kit.webp" alt="SL"><span>Leadership</span>
+                    </div>
+                    <div class="kit-item">
+                        <img src="img/Icon_Medic_kit.webp" alt="Medic"><span>Medic</span>
+                    </div>
+                    <div class="kit-item">
+                        <img src="img/Icon_Heavy_Anti_Tank_kit.webp" alt="HAT"><span>Anti-Tank</span>
+                    </div>
+                    <div class="kit-item">
+                        <img src="img/Icon_Crewman_kit.webp" alt="Crew"><span>Vehicle Crew</span>
+                    </div>
+                    <div class="kit-item">
+                        <img src="img/Icon_Rifleman_kit.webp" alt="Rifleman"><span>Infanterie</span>
+                    </div>
+                    <div class="kit-item">
+                        <img src="img/Icon_Combat_Engineer_kit.webp" alt="Logi" style="border-radius: 5px;"><span>Logistik</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CHAOS CORNER -->
+            <div class="chaos-container">
+                <div class="chaos-img">
+                    <img src="img/Flippedlogi.jpg" alt="Flipped Logi">
+                </div>
+                <div>
+                    <h3><i class="fas fa-exclamation-triangle" style="color: #d4af37;"></i> Realismus vs. Physik</h3>
+                    <p style="font-size: 0.95rem; color: #ddd;">
+                        Bei uns steht der Spaß im Vordergrund. Wir nehmen das Gefecht ernst, aber nicht uns selbst.
+                        Wenn der Truck mal wieder fliegt: Lachen, Screenshot machen, weitermachen.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GAMES SECTION -->
+    <section id="games">
+        <h2 style="text-align: center; margin-bottom: 50px;">Unsere <span class="highlight">Operations</span></h2>
+        
+        <div class="games-grid-layout reveal">
+            <!-- SQUAD -->
+            <div class="game-detail-card" style="border-top: 4px solid #d2b48c;">
+                <h3><i class="fas fa-tractor"></i> SQUAD <span class="game-tag">Main Game</span></h3>
+                <p class="game-desc">
+                    In Squad gewinnen wir nicht durch K/D, sondern durch Kommunikation. 
+                    Wir spielen organisiert auf den großen deutschen Servern.
+                </p>
+                <ul class="feature-list">
+                    <li><strong>Infanterie:</strong> Koordiniertes Vorgehen, Smokes & Flankenangriffe.</li>
+                    <li><strong>Panzer & APC:</strong> Unsere Crews arbeiten eng mit der Infanterie zusammen.</li>
+                    <li><strong>Logistik:</strong> Wir bauen FOBs, die das Team gewinnen lassen.</li>
+                </ul>
+            </div>
+
+            <!-- ARMA -->
+            <div class="game-detail-card" style="border-top: 4px solid #607D8B;">
+                <h3><i class="fas fa-globe"></i> ARMA REFORGER <span class="game-tag">Unit Op</span></h3>
+                <p class="game-desc">
+                    Der Kalte Krieg ist heiß. Wir operieren als geschlossene "Iron Eagles Unit" auf Servern.
+                </p>
+                <ul class="feature-list">
+                    <li><strong>Conflict & Game Master:</strong> Große PvE und PvP Szenarien.</li>
+                    <li><strong>Crossplay:</strong> Egal ob PC oder Xbox, wir kämpfen zusammen.</li>
+                    <li><strong>Unit Struktur:</strong> Jeder hat seine feste Rolle im Zug.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- RECRUITMENT -->
+    <section id="join">
+        <div class="glass-card reveal" style="text-align: center; max-width: 900px;">
+            <h2>Wir suchen <span class="highlight">Verstärkung.</span></h2>
+            <p style="margin: 20px auto; color: #ccc;">
+                Wir wollen wachsen und suchen Leute, die Bock haben, die Community aktiv mitzugestalten. 
+                Egal ob 16 oder 35 Jahre alt – bei uns zählt die Motivation.
+            </p>
+            
+            <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 30px;">
+                <span style="background: rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 30px; font-size: 0.9rem; border: 1px solid var(--primary);"><i class="fab fa-tiktok"></i> Content Creator</span>
+                <span style="background: rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 30px; font-size: 0.9rem; border: 1px solid var(--primary);"><i class="fas fa-shield-alt"></i> Admins & Mods</span>
+                <span style="background: rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 30px; font-size: 0.9rem; border: 1px solid var(--primary);"><i class="fas fa-users"></i> Squad Leader</span>
+            </div>
+
+            <a href="https://discord.gg/efBWySqm9M" class="btn btn-discord" style="font-size: 1.2rem; padding: 20px 60px;">
+                <i class="fab fa-discord"></i> Jetzt Bewerben
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="support">
+        <h3>Logistik & Support</h3>
+        <p style="color: #888; margin-bottom: 30px;">Supporte Dr_Panda bei den Serverkosten & Kaffee.</p>
+        <a href="https://ko-fi.com/fl0r1an06" target="_blank" class="btn" style="border: 1px solid #333;">
+            <i class="fas fa-coffee"></i> Zur Kriegskasse
+        </a>
+        <p style="margin-top: 50px; font-size: 0.8rem; color: #444;">&copy; 2025 Iron Eagles Community.</p>
+    </footer>
+
+    <!-- SCRIPT -->
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        });
+        document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+        // Hintergrund-Logik angepasst für die neue Länge (Mission Sektion hinzugefügt)
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const height = window.innerHeight;
+            const bg1 = document.getElementById('bg-1');
+            const bg2 = document.getElementById('bg-2');
+            const bg3 = document.getElementById('bg-3');
+
+            // 1. Briefing (Header + Mission)
+            if (scrollY < height * 1.5) {
+                bg1.classList.add('active'); bg2.classList.remove('active'); bg3.classList.remove('active');
+            } 
+            // 2. Action (Academy & Games)
+            else if (scrollY >= height * 1.5 && scrollY < height * 3.5) {
+                bg1.classList.remove('active'); bg2.classList.add('active'); bg3.classList.remove('active');
+            } 
+            // 3. Return (Join & Support)
+            else {
+                bg1.classList.remove('active'); bg2.classList.remove('active'); bg3.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>
