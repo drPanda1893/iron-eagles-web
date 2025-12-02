@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        /* --- STYLES (Aussehen) --- */
         :root {
             --primary: #5D7347;
             --dark: #0f1012;
@@ -15,8 +16,6 @@
             --text: #fff;
             --danger: #e74c3c;
             --success: #2ecc71;
-            --us-blue: #3498db;
-            --rus-red: #e74c3c;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -43,24 +42,22 @@
         }
         .back-btn:hover { color: var(--primary); }
 
-        /* QUIZ CONTAINER */
         .quiz-card {
             background: var(--card);
             border: 1px solid #333;
             border-radius: 15px;
             padding: 30px;
             width: 100%;
-            max-width: 600px;
+            max-width: 800px; /* Breiter für PC */
             text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             position: relative;
             overflow: hidden;
         }
 
-        /* IMAGE AREA */
         .vehicle-img-container {
             width: 100%;
-            height: 300px;
+            height: 400px; /* Größeres Bild */
             background: #000;
             border-radius: 10px;
             margin-bottom: 20px;
@@ -77,7 +74,6 @@
             object-fit: contain;
         }
 
-        /* OPTIONS */
         .options-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -97,64 +93,28 @@
             font-weight: bold;
         }
 
-        .option-btn:hover {
-            background: #333;
-            border-color: var(--primary);
-        }
-
+        .option-btn:hover { background: #333; border-color: var(--primary); }
         .option-btn.correct { background: var(--success); border-color: var(--success); }
         .option-btn.wrong { background: var(--danger); border-color: var(--danger); }
 
-        /* FACTION BUTTONS (Alternative Mode) */
-        .faction-mode .option-btn.us { border-left: 5px solid var(--us-blue); }
-        .faction-mode .option-btn.rus { border-left: 5px solid var(--rus-red); }
-
-        /* STATUS BAR */
         .status-bar {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9rem;
-            color: #888;
-            margin-bottom: 15px;
-            font-family: 'Oswald', sans-serif;
-            letter-spacing: 1px;
+            display: flex; justify-content: space-between; font-size: 0.9rem;
+            color: #888; margin-bottom: 15px; font-family: 'Oswald', sans-serif;
         }
-
         .score-display { color: var(--primary); font-size: 1.2rem; }
 
-        /* START / END SCREENS */
         .screen { display: none; }
         .screen.active { display: block; }
 
         .start-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 20px;
-            text-transform: uppercase;
+            background: var(--primary); color: white; border: none; padding: 15px 40px;
+            border-radius: 50px; font-size: 1.2rem; font-weight: bold; cursor: pointer;
+            margin-top: 20px; text-transform: uppercase;
         }
-        .start-btn:hover { transform: scale(1.05); box-shadow: 0 0 15px var(--primary-glow); }
+        .start-btn:hover { transform: scale(1.05); box-shadow: 0 0 15px rgba(93, 115, 71, 0.6); }
 
-        /* TIMER BAR */
-        .timer-container {
-            height: 5px;
-            background: #333;
-            width: 100%;
-            position: absolute;
-            top: 0; left: 0;
-        }
-        .timer-bar {
-            height: 100%;
-            background: var(--primary);
-            width: 100%;
-            transition: width 1s linear;
-        }
-
+        .timer-container { height: 5px; background: #333; width: 100%; position: absolute; top: 0; left: 0; }
+        .timer-bar { height: 100%; background: var(--primary); width: 100%; transition: width 1s linear; }
     </style>
 </head>
 <body>
@@ -169,13 +129,9 @@
         <div id="start-screen" class="screen active">
             <h2>Erkennst du den Feind?</h2>
             <p style="color: #aaa; margin: 20px 0;">
-                In Squad ist Zögern tödlich. Aber auf eigene Leute schießen ist schlimmer.<br>
-                Teste dein Wissen über Fahrzeug-Silhouetten.
+                Teste dein Wissen über alle Squad-Fahrzeuge.<br>
+                Freund oder Feind? Entscheide schnell!
             </p>
-            <div style="margin-bottom: 30px;">
-                <p><i class="fas fa-clock"></i> 10 Sekunden pro Bild</p>
-                <p><i class="fas fa-trophy"></i> Highscore knacken</p>
-            </div>
             <button class="start-btn" onclick="startQuiz()">Mission Starten</button>
         </div>
 
@@ -189,11 +145,12 @@
             </div>
 
             <div class="vehicle-img-container">
+                <!-- Hier wird das Bild per Javascript reingeladen -->
                 <img id="vehicle-img" src="" alt="Vehicle">
             </div>
 
             <div class="options-grid" id="options-container">
-                <!-- Buttons werden hier generiert -->
+                <!-- Buttons werden hier automatisch erstellt -->
             </div>
             <div id="feedback-text" style="height: 20px; font-weight: bold; margin-top: 10px;"></div>
         </div>
@@ -209,24 +166,105 @@
     </div>
 
     <script>
-        // --- KONFIGURATION: HIER DEINE BILDER EINTRAGEN ---
-        // name: Was auf dem Button steht
-        // img: Pfad zum Bild (im 'img/vehicles/' Ordner ablegen!)
-        // type: Z.B. 'tank', 'apc', 'logi' (optional für später)
+        // ======================================================
+        // FAHRZEUG LISTE (WEBP)
+        // BENENNE DEINE BILDER GENAU SO WIE HIER UNTEN!
+        // ======================================================
+        
         const vehicles = [
-            { name: "M1A2 Abrams (US)", img: "img/vehicles/abrams.jpg", type: "tank" },
-            { name: "T-72B3 (RUS)", img: "img/vehicles/t72.jpg", type: "tank" },
-            { name: "BTR-82A (RUS)", img: "img/vehicles/btr82a.jpg", type: "apc" },
-            { name: "Stryker (US)", img: "img/vehicles/stryker.jpg", type: "apc" },
-            { name: "LAV-6 (CAF)", img: "img/vehicles/lav6.jpg", type: "apc" },
-            { name: "BMP-2 (MEA)", img: "img/vehicles/bmp2.jpg", type: "ifv" },
-            { name: "Bradley M2A3 (US)", img: "img/vehicles/bradley.jpg", type: "ifv" },
-            { name: "Tigr (RUS)", img: "img/vehicles/tigr.jpg", type: "light" },
-            { name: "M-ATV (US)", img: "img/vehicles/matv.jpg", type: "light" },
-            { name: "Logi Truck (URAL)", img: "img/vehicles/ural_logi.jpg", type: "logi" }
+            // --- MAIN BATTLE TANKS (MBTs) ---
+            { name: "FV4034 Challenger 2 (GB)", img: "img/vehicles/fv4034.webp", type: "tank" },
+            { name: "Leopard 2A6M (CAF)", img: "img/vehicles/leo2a6m.webp", type: "tank" },
+            { name: "M1A1 Abrams (USMC/ADF)", img: "img/vehicles/m1a1.webp", type: "tank" },
+            { name: "M1A2 Abrams (US Army)", img: "img/vehicles/m1a2.webp", type: "tank" },
+            { name: "M60T Sabra (TLF)", img: "img/vehicles/m60t.webp", type: "tank" },
+            { name: "T-62 (Insurgents)", img: "img/vehicles/t62.webp", type: "tank" },
+            { name: "T-72B3 (RGF)", img: "img/vehicles/t72b3.webp", type: "tank" },
+            { name: "T-72S (MEA)", img: "img/vehicles/t72s.webp", type: "tank" },
+            { name: "T-90A (RGF)", img: "img/vehicles/t90a.webp", type: "tank" },
+            { name: "ZTZ-99A (PLA)", img: "img/vehicles/ztz99a.webp", type: "tank" },
+
+            // --- MOBILE GUN SYSTEMS (MGS) ---
+            { name: "M1128 Stryker MGS (US)", img: "img/vehicles/m1128.webp", type: "tank" },
+            { name: "Sprut-SDM1 (VDV)", img: "img/vehicles/sprut.webp", type: "tank" },
+            { name: "ZTD-05 (PLA Amphibious)", img: "img/vehicles/ztd05.webp", type: "tank" },
+
+            // --- RECONNAISSANCE ---
+            { name: "Coyote (CAF)", img: "img/vehicles/coyote.webp", type: "scout" },
+            { name: "FV107 Scimitar (GB)", img: "img/vehicles/fv107.webp", type: "scout" },
+            { name: "BRDM-2 (Spähpanzer)", img: "img/vehicles/brdm2.webp", type: "scout" },
+            { name: "LUV-A1 (G-Wagon)", img: "img/vehicles/luva1.webp", type: "scout" },
+
+            // --- INFANTRY FIGHTING VEHICLES (IFVs) ---
+            { name: "ACV-15 (TLF)", img: "img/vehicles/acv15.webp", type: "ifv" },
+            { name: "BMD-1M (Militia)", img: "img/vehicles/bmd1m.webp", type: "ifv" },
+            { name: "BMD-4M (VDV)", img: "img/vehicles/bmd4m.webp", type: "ifv" },
+            { name: "BMP-1 (Insurgents)", img: "img/vehicles/bmp1.webp", type: "ifv" },
+            { name: "BMP-2 (MEA/RGF)", img: "img/vehicles/bmp2.webp", type: "ifv" },
+            { name: "BMP-3M (RGF)", img: "img/vehicles/bmp3m.webp", type: "ifv" },
+            { name: "BTR-82A (RGF/MEA)", img: "img/vehicles/btr82a.webp", type: "ifv" },
+            { name: "FV510 Warrior (GB)", img: "img/vehicles/fv510.webp", type: "ifv" },
+            { name: "LAV-25 (USMC)", img: "img/vehicles/lav25.webp", type: "ifv" },
+            { name: "LAV-6.0 (CAF)", img: "img/vehicles/lav6.webp", type: "ifv" },
+            { name: "M2A3 Bradley (US Army)", img: "img/vehicles/m2a3.webp", type: "ifv" },
+            { name: "PARS III (TLF)", img: "img/vehicles/pars3.webp", type: "ifv" },
+            { name: "ZBD-04A (PLA)", img: "img/vehicles/zbd04a.webp", type: "ifv" },
+            { name: "ZBD-05 (PLA Marines)", img: "img/vehicles/zbd05.webp", type: "ifv" },
+            { name: "ZBL-08 (PLA Radpanzer)", img: "img/vehicles/zbl08.webp", type: "ifv" },
+
+            // --- ARMORED PERSONNEL CARRIERS (APCs) ---
+            { name: "AAVP-7A1 (USMC)", img: "img/vehicles/aavp.webp", type: "apc" },
+            { name: "BTR-80 (RGF/Insurgents)", img: "img/vehicles/btr80.webp", type: "apc" },
+            { name: "BTR-D (VDV)", img: "img/vehicles/btrd.webp", type: "apc" },
+            { name: "BTR-MDM (VDV)", img: "img/vehicles/btrmdm.webp", type: "apc" },
+            { name: "FV432 Bulldog (GB)", img: "img/vehicles/fv432.webp", type: "apc" },
+            { name: "LAV III (CAF)", img: "img/vehicles/lav3.webp", type: "apc" },
+            { name: "M1126 Stryker (US Army)", img: "img/vehicles/m1126.webp", type: "apc" },
+            { name: "M113A3 (TLAV)", img: "img/vehicles/m113a3.webp", type: "apc" },
+            { name: "MT-LB (Militia/MEA)", img: "img/vehicles/mtlb.webp", type: "apc" },
+            { name: "ZSD-05 (PLA)", img: "img/vehicles/zsd05.webp", type: "apc" },
+            { name: "ZSL-10 (PLA)", img: "img/vehicles/zsl10.webp", type: "apc" },
+
+            // --- LIGHT VEHICLES & SCOUTS ---
+            { name: "Cobra II (TLF)", img: "img/vehicles/cobra2.webp", type: "light" },
+            { name: "CSK-131 (PLA)", img: "img/vehicles/csk131.webp", type: "light" },
+            { name: "LPPV (GB Foxhound)", img: "img/vehicles/lppv.webp", type: "light" },
+            { name: "TAPV (CAF)", img: "img/vehicles/tapv.webp", type: "light" },
+            { name: "M-ATV (US Army)", img: "img/vehicles/matv.webp", type: "light" },
+            { name: "M1151 Humvee (USMC)", img: "img/vehicles/m1151.webp", type: "light" },
+            { name: "PMV (ADF Bushmaster)", img: "img/vehicles/pmv.webp", type: "light" },
+            { name: "Simir (Militia Jeep)", img: "img/vehicles/simir.webp", type: "light" },
+            { name: "Technical (Insurgents)", img: "img/vehicles/technical.webp", type: "light" },
+            { name: "Tigr-M (RGF)", img: "img/vehicles/tigr.webp", type: "light" },
+
+            // --- LOGISTICS ---
+            { name: "BMC 185 (TLF Logi)", img: "img/vehicles/bmc185.webp", type: "logi" },
+            { name: "CTM-131 (PLA Logi)", img: "img/vehicles/ctm131.webp", type: "logi" },
+            { name: "KamAZ 5350 (RGF Logi)", img: "img/vehicles/kamaz5350.webp", type: "logi" },
+            { name: "M939 Truck (US/Ins)", img: "img/vehicles/m939.webp", type: "logi" },
+            { name: "MAN HX (GB Logi)", img: "img/vehicles/manhx.webp", type: "logi" },
+            { name: "MSVS (CAF Logi)", img: "img/vehicles/msvs.webp", type: "logi" },
+            { name: "URAL 4320 (MEA/Militia)", img: "img/vehicles/ural4320.webp", type: "logi" },
+
+            // --- ARTILLERY ---
+            { name: "BM-21 Grad (Raketenwerfer)", img: "img/vehicles/bm21.webp", type: "arty" },
+            { name: "M1064A3 (Mörser-Panzer)", img: "img/vehicles/m1064.webp", type: "arty" },
+
+            // --- HELICOPTERS ---
+            { name: "CH-146 Griffon (CAF)", img: "img/vehicles/ch146.webp", type: "heli" },
+            { name: "Mi-8 Hip (RGF)", img: "img/vehicles/mi8.webp", type: "heli" },
+            { name: "Mi-17 (Militia/MEA)", img: "img/vehicles/mi17.webp", type: "heli" },
+            { name: "MRH-90 Taipan (ADF)", img: "img/vehicles/mrh90.webp", type: "heli" },
+            { name: "SA330 Puma (GB)", img: "img/vehicles/sa330.webp", type: "heli" },
+            { name: "UH-1Y Venom (USMC)", img: "img/vehicles/uh1y.webp", type: "heli" },
+            { name: "UH-60M Blackhawk (US)", img: "img/vehicles/uh60m.webp", type: "heli" },
+            { name: "Z-8 (PLA)", img: "img/vehicles/z8.webp", type: "heli" }
         ];
 
-        // Globale Variablen
+        // ======================================================
+        // AB HIER NICHTS MEHR ÄNDERN (SPIEL LOGIK)
+        // ======================================================
+
         let currentQuestion = 0;
         let score = 0;
         let timer;
@@ -234,7 +272,7 @@
         let gameActive = false;
         let questionPool = [];
 
-        // DOM Elemente
+        // Elemente laden
         const startScreen = document.getElementById('start-screen');
         const gameScreen = document.getElementById('game-screen');
         const endScreen = document.getElementById('end-screen');
@@ -246,13 +284,12 @@
         const feedbackEl = document.getElementById('feedback-text');
 
         function startQuiz() {
-            // Reset
             score = 0;
             currentQuestion = 0;
             scoreEl.innerText = '0';
-            questionPool = [...vehicles].sort(() => 0.5 - Math.random()); // Mischen
+            // Zufällige Reihenfolge der Fragen
+            questionPool = [...vehicles].sort(() => 0.5 - Math.random()); 
             
-            // Screens umschalten
             startScreen.classList.remove('active');
             endScreen.classList.remove('active');
             gameScreen.classList.add('active');
@@ -261,7 +298,8 @@
         }
 
         function nextQuestion() {
-            if (currentQuestion >= 10 || currentQuestion >= vehicles.length) {
+            // Spielende nach 15 Fragen (oder weniger wenn nicht genug da sind)
+            if (currentQuestion >= 15 || currentQuestion >= vehicles.length) {
                 endGame();
                 return;
             }
@@ -270,8 +308,10 @@
             feedbackEl.innerText = "";
             const target = questionPool[currentQuestion];
             
-            // UI Update
-            progressEl.innerText = `Fahrzeug ${currentQuestion + 1} / 10`;
+            progressEl.innerText = `Fahrzeug ${currentQuestion + 1} / 15`;
+            
+            // Bild setzen (Falls Bild nicht gefunden wird, zeige Platzhalter)
+            imgEl.onerror = function() { this.src = 'https://via.placeholder.com/600x400?text=Bild+fehlt'; };
             imgEl.src = target.img;
 
             // Timer Reset
@@ -287,16 +327,16 @@
             timer = setInterval(() => {
                 timeLeft--;
                 if (timeLeft <= 0) {
-                    checkAnswer(null, target); // Zeit abgelaufen
+                    checkAnswer(null, target);
                 }
             }, 1000);
 
-            // Antworten generieren (1 Richtig, 3 Falsch)
+            // Antworten mischen: 1 Richtige + 3 Falsche
             let options = [target];
             const distractors = vehicles.filter(v => v.name !== target.name).sort(() => 0.5 - Math.random()).slice(0, 3);
             options = options.concat(distractors).sort(() => 0.5 - Math.random());
 
-            // Buttons rendern
+            // Buttons erstellen
             optionsContainer.innerHTML = '';
             options.forEach(opt => {
                 const btn = document.createElement('button');
@@ -316,15 +356,15 @@
 
             if (selected && selected.name === correct.name) {
                 // Richtig
-                score += 100 + (timeLeft * 10); // Bonus für Schnelligkeit
+                score += 100 + (timeLeft * 10);
                 scoreEl.innerText = score;
                 btnElement.classList.add('correct');
                 feedbackEl.innerText = "KORREKT!";
                 feedbackEl.style.color = "var(--success)";
             } else {
-                // Falsch oder Zeit abgelaufen
+                // Falsch
                 if (btnElement) btnElement.classList.add('wrong');
-                // Richtigen Button zeigen
+                // Zeige, was richtig war
                 buttons.forEach(b => {
                     if (b.innerText === correct.name) b.classList.add('correct');
                 });
@@ -332,7 +372,6 @@
                 feedbackEl.style.color = "var(--danger)";
             }
 
-            // Nächste Frage nach 2 Sekunden
             setTimeout(() => {
                 currentQuestion++;
                 nextQuestion();
@@ -344,10 +383,10 @@
             endScreen.classList.add('active');
             document.getElementById('final-score').innerText = score;
             
-            let msg = "Zurück in die Grundausbildung, Soldat.";
-            if (score > 500) msg = "Gute Arbeit. Du bist bereit für das Feld.";
-            if (score > 1000) msg = "Hervorragend! Du kennst jedes Detail.";
-            if (score > 1500) msg = "Adlerauge! Du solltest Squad Lead werden.";
+            let msg = "Zurück in die Grundausbildung.";
+            if (score > 1000) msg = "Gute Arbeit, Soldat.";
+            if (score > 2000) msg = "Hervorragend! Du kennst deine Ziele.";
+            if (score > 3000) msg = "Adlerauge! Du solltest Squad Lead werden.";
             
             document.getElementById('final-msg').innerText = msg;
         }
