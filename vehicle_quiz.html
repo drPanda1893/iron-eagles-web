@@ -48,7 +48,7 @@
             border-radius: 15px;
             padding: 30px;
             width: 100%;
-            max-width: 800px; /* Breiter für PC */
+            max-width: 800px;
             text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             position: relative;
@@ -57,7 +57,7 @@
 
         .vehicle-img-container {
             width: 100%;
-            height: 400px; /* Größeres Bild */
+            height: 400px;
             background: #000;
             border-radius: 10px;
             margin-bottom: 20px;
@@ -145,13 +145,10 @@
             </div>
 
             <div class="vehicle-img-container">
-                <!-- Hier wird das Bild per Javascript reingeladen -->
                 <img id="vehicle-img" src="" alt="Vehicle">
             </div>
 
-            <div class="options-grid" id="options-container">
-                <!-- Buttons werden hier automatisch erstellt -->
-            </div>
+            <div class="options-grid" id="options-container"></div>
             <div id="feedback-text" style="height: 20px; font-weight: bold; margin-top: 10px;"></div>
         </div>
 
@@ -167,102 +164,104 @@
 
     <script>
         // ======================================================
-        // FAHRZEUG LISTE (WEBP)
-        // BENENNE DEINE BILDER GENAU SO WIE HIER UNTEN!
+        // FAHRZEUG LISTE
+        // HIER SIND JETZT ALLE DEINE BILDER EINGETRAGEN
         // ======================================================
         
         const vehicles = [
             // --- MAIN BATTLE TANKS (MBTs) ---
-            { name: "FV4034 Challenger 2 (GB)", img: "img/vehicles/fv4034.webp", type: "tank" },
-            { name: "Leopard 2A6M (CAF)", img: "img/vehicles/leo2a6m.webp", type: "tank" },
-            { name: "M1A1 Abrams (USMC/ADF)", img: "img/vehicles/m1a1.webp", type: "tank" },
-            { name: "M1A2 Abrams (US Army)", img: "img/vehicles/m1a2.webp", type: "tank" },
-            { name: "M60T Sabra (TLF)", img: "img/vehicles/m60t.webp", type: "tank" },
-            { name: "T-62 (Insurgents)", img: "img/vehicles/t62.webp", type: "tank" },
-            { name: "T-72B3 (RGF)", img: "img/vehicles/t72b3.webp", type: "tank" },
+            { name: "Challenger 2 (GB)", img: "img/vehicles/Bafv4034.webp", type: "tank" },
+            { name: "Leopard 2A6M (CAF)", img: "img/vehicles/Cafleopard2a6.webp", type: "tank" },
+            { name: "M1A1 Abrams (USMC/ADF)", img: "img/vehicles/M1A1.webp", type: "tank" },
+            { name: "M1A2 Abrams (US Army)", img: "img/vehicles/Usarmym1a2.webp", type: "tank" },
+            { name: "M60T Sabra (TLF)", img: "img/vehicles/M60T_ingame.webp", type: "tank" },
+            { name: "T-62 (Insurgents)", img: "img/vehicles/20190609234404_1.webp", type: "tank" },
+            { name: "T-72B3 (RGF)", img: "img/vehicles/Rgft72b3.webp", type: "tank" },
             { name: "T-72S (MEA)", img: "img/vehicles/t72s.webp", type: "tank" },
-            { name: "T-90A (RGF)", img: "img/vehicles/t90a.webp", type: "tank" },
-            { name: "ZTZ-99A (PLA)", img: "img/vehicles/ztz99a.webp", type: "tank" },
+            { name: "T-90A (RGF)", img: "img/vehicles/T-90A.webp", type: "tank" },
+            { name: "ZTZ-99A (PLA)", img: "img/vehicles/ZTZ99A_ingame.webp", type: "tank" },
 
             // --- MOBILE GUN SYSTEMS (MGS) ---
-            { name: "M1128 Stryker MGS (US)", img: "img/vehicles/m1128.webp", type: "tank" },
-            { name: "Sprut-SDM1 (VDV)", img: "img/vehicles/sprut.webp", type: "tank" },
-            { name: "ZTD-05 (PLA Amphibious)", img: "img/vehicles/ztd05.webp", type: "tank" },
+            { name: "M1128 Stryker MGS (US)", img: "img/vehicles/M1128_ingame.webp", type: "tank" },
+            { name: "Sprut-SDM1 (VDV)", img: "img/vehicles/Sprut-SDM1_ingame.webp", type: "tank" },
+            { name: "ZTD-05 (PLA Amphibious)", img: "img/vehicles/ZTD05_ingame.webp", type: "tank" },
 
             // --- RECONNAISSANCE ---
-            { name: "Coyote (CAF)", img: "img/vehicles/coyote.webp", type: "scout" },
-            { name: "FV107 Scimitar (GB)", img: "img/vehicles/fv107.webp", type: "scout" },
-            { name: "BRDM-2 (Spähpanzer)", img: "img/vehicles/brdm2.webp", type: "scout" },
+            { name: "Coyote (CAF)", img: "img/vehicles/Cafcoyote.webp", type: "scout" },
+            { name: "Scimitar (GB)", img: "img/vehicles/Baf107.webp", type: "scout" },
+            { name: "BRDM-2 (Spähpanzer)", img: "img/vehicles/Rgfbrdm2.webp", type: "scout" },
             { name: "LUV-A1 (G-Wagon)", img: "img/vehicles/luva1.webp", type: "scout" },
 
             // --- INFANTRY FIGHTING VEHICLES (IFVs) ---
-            { name: "ACV-15 (TLF)", img: "img/vehicles/acv15.webp", type: "ifv" },
-            { name: "BMD-1M (Militia)", img: "img/vehicles/bmd1m.webp", type: "ifv" },
+            { name: "ACV-15 (TLF)", img: "img/vehicles/ACV-15_IFV_ingame.webp", type: "ifv" },
+            { name: "BMD-1M (Militia)", img: "img/vehicles/BMD-1M_ingame.webp", type: "ifv" },
             { name: "BMD-4M (VDV)", img: "img/vehicles/bmd4m.webp", type: "ifv" },
-            { name: "BMP-1 (Insurgents)", img: "img/vehicles/bmp1.webp", type: "ifv" },
-            { name: "BMP-2 (MEA/RGF)", img: "img/vehicles/bmp2.webp", type: "ifv" },
+            { name: "BMP-1 (Insurgents)", img: "img/vehicles/Bmp1.webp", type: "ifv" },
+            { name: "BMP-2 (MEA/RGF)", img: "img/vehicles/Blog_bmp2_woatgm.webp", type: "ifv" },
             { name: "BMP-3M (RGF)", img: "img/vehicles/bmp3m.webp", type: "ifv" },
-            { name: "BTR-82A (RGF/MEA)", img: "img/vehicles/btr82a.webp", type: "ifv" },
-            { name: "FV510 Warrior (GB)", img: "img/vehicles/fv510.webp", type: "ifv" },
-            { name: "LAV-25 (USMC)", img: "img/vehicles/lav25.webp", type: "ifv" },
-            { name: "LAV-6.0 (CAF)", img: "img/vehicles/lav6.webp", type: "ifv" },
-            { name: "M2A3 Bradley (US Army)", img: "img/vehicles/m2a3.webp", type: "ifv" },
-            { name: "PARS III (TLF)", img: "img/vehicles/pars3.webp", type: "ifv" },
-            { name: "ZBD-04A (PLA)", img: "img/vehicles/zbd04a.webp", type: "ifv" },
-            { name: "ZBD-05 (PLA Marines)", img: "img/vehicles/zbd05.webp", type: "ifv" },
-            { name: "ZBL-08 (PLA Radpanzer)", img: "img/vehicles/zbl08.webp", type: "ifv" },
+            { name: "BTR-82A (RGF/MEA)", img: "img/vehicles/Rgfbtr82.webp", type: "ifv" },
+            { name: "Warrior (GB)", img: "img/vehicles/Bafv510.webp", type: "ifv" },
+            { name: "LAV-25 (USMC)", img: "img/vehicles/LAV-25_ingame.webp", type: "ifv" },
+            { name: "LAV-6.0 (CAF)", img: "img/vehicles/Caflav6.webp", type: "ifv" },
+            { name: "M2A3 Bradley (US Army)", img: "img/vehicles/Usarmym2a3.webp", type: "ifv" },
+            { name: "PARS III (TLF)", img: "img/vehicles/PARS_III_IFV_ingame.webp", type: "ifv" },
+            { name: "ZBD-04A (PLA)", img: "img/vehicles/04.webp", type: "ifv" },
+            { name: "ZBD-05 (PLA Marines)", img: "img/vehicles/Blog_zbd05.webp", type: "ifv" },
+            { name: "ZBL-08 (PLA Radpanzer)", img: "img/vehicles/ZBL-08_HJ-73C.webp", type: "ifv" },
 
             // --- ARMORED PERSONNEL CARRIERS (APCs) ---
-            { name: "AAVP-7A1 (USMC)", img: "img/vehicles/aavp.webp", type: "apc" },
-            { name: "BTR-80 (RGF/Insurgents)", img: "img/vehicles/btr80.webp", type: "apc" },
-            { name: "BTR-D (VDV)", img: "img/vehicles/btrd.webp", type: "apc" },
+            { name: "AAVP-7A1 (USMC)", img: "img/vehicles/AAVP-7A1_ingame.webp", type: "apc" },
+            { name: "BTR-80 (RGF/Insurgents)", img: "img/vehicles/Rgfbtr80.webp", type: "apc" },
+            { name: "BTR-D (VDV)", img: "img/vehicles/BTR-D_ingame.webp", type: "apc" },
             { name: "BTR-MDM (VDV)", img: "img/vehicles/btrmdm.webp", type: "apc" },
-            { name: "FV432 Bulldog (GB)", img: "img/vehicles/fv432.webp", type: "apc" },
-            { name: "LAV III (CAF)", img: "img/vehicles/lav3.webp", type: "apc" },
-            { name: "M1126 Stryker (US Army)", img: "img/vehicles/m1126.webp", type: "apc" },
-            { name: "M113A3 (TLAV)", img: "img/vehicles/m113a3.webp", type: "apc" },
-            { name: "MT-LB (Militia/MEA)", img: "img/vehicles/mtlb.webp", type: "apc" },
-            { name: "ZSD-05 (PLA)", img: "img/vehicles/zsd05.webp", type: "apc" },
-            { name: "ZSL-10 (PLA)", img: "img/vehicles/zsl10.webp", type: "apc" },
+            { name: "Bulldog (GB)", img: "img/vehicles/bulldog.webp", type: "apc" },
+            { name: "LAV III (CAF)", img: "img/vehicles/CAFlav3.webp", type: "apc" },
+            { name: "M1126 Stryker (US Army)", img: "img/vehicles/Usarmym1126.webp", type: "apc" },
+            { name: "M113A3 (TLAV)", img: "img/vehicles/Cafm113.webp", type: "apc" },
+            { name: "MT-LB (Militia/MEA)", img: "img/vehicles/MTLB_VMK_Infocarfd.webp", type: "apc" },
+            { name: "ZSD-05 (PLA)", img: "img/vehicles/ZSD05-APC_ingame.webp", type: "apc" },
+            { name: "ZSL-10 (PLA)", img: "img/vehicles/ZSL10-PLA_ingame.webp", type: "apc" },
 
             // --- LIGHT VEHICLES & SCOUTS ---
-            { name: "Cobra II (TLF)", img: "img/vehicles/cobra2.webp", type: "light" },
-            { name: "CSK-131 (PLA)", img: "img/vehicles/csk131.webp", type: "light" },
-            { name: "LPPV (GB Foxhound)", img: "img/vehicles/lppv.webp", type: "light" },
-            { name: "TAPV (CAF)", img: "img/vehicles/tapv.webp", type: "light" },
-            { name: "M-ATV (US Army)", img: "img/vehicles/matv.webp", type: "light" },
-            { name: "M1151 Humvee (USMC)", img: "img/vehicles/m1151.webp", type: "light" },
-            { name: "PMV (ADF Bushmaster)", img: "img/vehicles/pmv.webp", type: "light" },
+            { name: "Cobra II (TLF)", img: "img/vehicles/Cobra_II_M2_RWS_ingame.webp", type: "light" },
+            { name: "CSK-131 (PLA)", img: "img/vehicles/CSK131_QJY88_ingame.webp", type: "light" },
+            { name: "Foxhound LPPV (GB)", img: "img/vehicles/Balppv.webp", type: "light" },
+            { name: "TAPV (CAF)", img: "img/vehicles/Caftapv.webp", type: "light" },
+            { name: "M-ATV (US Army)", img: "img/vehicles/Usarmymatv.webp", type: "light" },
+            { name: "M1151 Humvee (USMC)", img: "img/vehicles/M1151_M2HB_ingame.webp", type: "light" },
+            { name: "PMV (ADF Bushmaster)", img: "img/vehicles/PMVInfocard.webp", type: "light" },
             { name: "Simir (Militia Jeep)", img: "img/vehicles/simir.webp", type: "light" },
             { name: "Technical (Insurgents)", img: "img/vehicles/technical.webp", type: "light" },
-            { name: "Tigr-M (RGF)", img: "img/vehicles/tigr.webp", type: "light" },
+            { name: "Tigr-M (RGF)", img: "img/vehicles/Rgftigr.webp", type: "light" },
 
             // --- LOGISTICS ---
-            { name: "BMC 185 (TLF Logi)", img: "img/vehicles/bmc185.webp", type: "logi" },
-            { name: "CTM-131 (PLA Logi)", img: "img/vehicles/ctm131.webp", type: "logi" },
-            { name: "KamAZ 5350 (RGF Logi)", img: "img/vehicles/kamaz5350.webp", type: "logi" },
-            { name: "M939 Truck (US/Ins)", img: "img/vehicles/m939.webp", type: "logi" },
-            { name: "MAN HX (GB Logi)", img: "img/vehicles/manhx.webp", type: "logi" },
-            { name: "MSVS (CAF Logi)", img: "img/vehicles/msvs.webp", type: "logi" },
-            { name: "URAL 4320 (MEA/Militia)", img: "img/vehicles/ural4320.webp", type: "logi" },
+            { name: "BMC 185 (TLF Logi)", img: "img/vehicles/BMC-185_Logistics_ingame.webp", type: "logi" },
+            { name: "CTM-131 (PLA Logi)", img: "img/vehicles/PLA-CTM131_Logistics_ingame.webp", type: "logi" },
+            { name: "KamAZ 5350 (RGF Logi)", img: "img/vehicles/Rgf5350.webp", type: "logi" },
+            { name: "M939 Truck (US/Ins)", img: "img/vehicles/Usarmym939logi.webp", type: "logi" },
+            { name: "MAN HX (GB Logi)", img: "img/vehicles/Bamanhx.webp", type: "logi" },
+            { name: "MSVS (CAF Logi)", img: "img/vehicles/Cafmsvs.webp", type: "logi" },
+            { name: "URAL 4320 (MEA/Militia)", img: "img/vehicles/URAL4320_Logistics_MEA_ingame.webp", type: "logi" },
+            { name: "URAL 375D (Logi)", img: "img/vehicles/Ural_375D_Logistics_Statistics.webp", type: "logi" },
 
             // --- ARTILLERY ---
-            { name: "BM-21 Grad (Raketenwerfer)", img: "img/vehicles/bm21.webp", type: "arty" },
-            { name: "M1064A3 (Mörser-Panzer)", img: "img/vehicles/m1064.webp", type: "arty" },
+            { name: "BM-21 Grad (Raketenwerfer)", img: "img/vehicles/BM-21_Grad_ingame.webp", type: "arty" },
+            { name: "M1064A3 (Mörser-Panzer)", img: "img/vehicles/M1064A3_ingame.webp", type: "arty" },
 
             // --- HELICOPTERS ---
-            { name: "CH-146 Griffon (CAF)", img: "img/vehicles/ch146.webp", type: "heli" },
-            { name: "Mi-8 Hip (RGF)", img: "img/vehicles/mi8.webp", type: "heli" },
+            { name: "CH-146 Griffon (CAF)", img: "img/vehicles/CH-146_ingame.webp", type: "heli" },
+            { name: "Mi-8 Hip (RGF)", img: "img/vehicles/Rgfmi8.webp", type: "heli" },
             { name: "Mi-17 (Militia/MEA)", img: "img/vehicles/mi17.webp", type: "heli" },
-            { name: "MRH-90 Taipan (ADF)", img: "img/vehicles/mrh90.webp", type: "heli" },
-            { name: "SA330 Puma (GB)", img: "img/vehicles/sa330.webp", type: "heli" },
-            { name: "UH-1Y Venom (USMC)", img: "img/vehicles/uh1y.webp", type: "heli" },
-            { name: "UH-60M Blackhawk (US)", img: "img/vehicles/uh60m.webp", type: "heli" },
-            { name: "Z-8 (PLA)", img: "img/vehicles/z8.webp", type: "heli" }
+            { name: "MRH-90 Taipan (ADF)", img: "img/vehicles/MRH90.webp", type: "heli" },
+            { name: "SA330 Puma (GB)", img: "img/vehicles/Basa330.webp", type: "heli" },
+            { name: "UH-1Y Venom (USMC)", img: "img/vehicles/BD_UH-1Y_Example.webp", type: "heli" },
+            { name: "UH-60M Blackhawk (US)", img: "img/vehicles/Usarmyuh60.webp", type: "heli" },
+            { name: "Z-8 (PLA)", img: "img/vehicles/Blog_ReleasePLANMC.webp", type: "heli" },
+            { name: "Loach (Militia)", img: "img/vehicles/Loach_CAS.webp", type: "heli" }
         ];
 
         // ======================================================
-        // AB HIER NICHTS MEHR ÄNDERN (SPIEL LOGIK)
+        // SPIEL LOGIK
         // ======================================================
 
         let currentQuestion = 0;
@@ -272,7 +271,6 @@
         let gameActive = false;
         let questionPool = [];
 
-        // Elemente laden
         const startScreen = document.getElementById('start-screen');
         const gameScreen = document.getElementById('game-screen');
         const endScreen = document.getElementById('end-screen');
@@ -287,7 +285,6 @@
             score = 0;
             currentQuestion = 0;
             scoreEl.innerText = '0';
-            // Zufällige Reihenfolge der Fragen
             questionPool = [...vehicles].sort(() => 0.5 - Math.random()); 
             
             startScreen.classList.remove('active');
@@ -298,7 +295,6 @@
         }
 
         function nextQuestion() {
-            // Spielende nach 15 Fragen (oder weniger wenn nicht genug da sind)
             if (currentQuestion >= 15 || currentQuestion >= vehicles.length) {
                 endGame();
                 return;
@@ -310,11 +306,9 @@
             
             progressEl.innerText = `Fahrzeug ${currentQuestion + 1} / 15`;
             
-            // Bild setzen (Falls Bild nicht gefunden wird, zeige Platzhalter)
             imgEl.onerror = function() { this.src = 'https://via.placeholder.com/600x400?text=Bild+fehlt'; };
             imgEl.src = target.img;
 
-            // Timer Reset
             timeLeft = 10;
             timerBar.style.transition = 'none';
             timerBar.style.width = '100%';
@@ -331,12 +325,10 @@
                 }
             }, 1000);
 
-            // Antworten mischen: 1 Richtige + 3 Falsche
             let options = [target];
             const distractors = vehicles.filter(v => v.name !== target.name).sort(() => 0.5 - Math.random()).slice(0, 3);
             options = options.concat(distractors).sort(() => 0.5 - Math.random());
 
-            // Buttons erstellen
             optionsContainer.innerHTML = '';
             options.forEach(opt => {
                 const btn = document.createElement('button');
@@ -355,16 +347,13 @@
             const buttons = optionsContainer.querySelectorAll('button');
 
             if (selected && selected.name === correct.name) {
-                // Richtig
                 score += 100 + (timeLeft * 10);
                 scoreEl.innerText = score;
                 btnElement.classList.add('correct');
                 feedbackEl.innerText = "KORREKT!";
                 feedbackEl.style.color = "var(--success)";
             } else {
-                // Falsch
                 if (btnElement) btnElement.classList.add('wrong');
-                // Zeige, was richtig war
                 buttons.forEach(b => {
                     if (b.innerText === correct.name) b.classList.add('correct');
                 });
