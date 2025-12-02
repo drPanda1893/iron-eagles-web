@@ -145,7 +145,7 @@
             <div class="timer-container"><div id="timer-bar" class="timer-bar"></div></div>
             
             <div class="status-bar">
-                <span id="progress-text">Soldat 1/10</span>
+                <span id="progress-text">Soldat 1/15</span>
                 <span class="score-display">Score: <span id="score">0</span></span>
             </div>
 
@@ -172,27 +172,30 @@
     <script>
         // ======================================================
         // UNIFORM / FRAKTIONEN LISTE
-        // Speichere Bilder in 'img/uniforms/'
+        // Speichere deine Bilder in 'img/uniforms/'
         // ======================================================
         
         const uniforms = [
-            // BLUFOR
-            { name: "US Army", img: "img/uniforms/us_army.webp" },
-            { name: "US Marine Corps (USMC)", img: "img/uniforms/usmc.webp" },
-            { name: "British Army", img: "img/uniforms/gb.webp" },
-            { name: "Canadian Army (CAF)", img: "img/uniforms/caf.webp" },
-            { name: "Australian Defence Force", img: "img/uniforms/adf.webp" },
-            { name: "Turkish Land Forces (TLF)", img: "img/vehicles/tlf.webp" }, // Platzhalter, falls kein Uniformbild da ist
+            // BLUFOR (Westen)
+            { name: "British Armed Forces (BAF)", img: "img/uniforms/BAF.webp" },
+            { name: "US Army (OEF-CP)", img: "img/uniforms/Blog_4.4usarmy.webp" },
+            { name: "US Marine Corps (Desert)", img: "img/uniforms/Blog_5.0marine.webp" },
+            { name: "US Marine Corps (Woodland)", img: "img/uniforms/Blog_marine.webp" },
+            { name: "Australian Defence Force (ADF)", img: "img/uniforms/Blog_adf1.webp" },
+            { name: "Canadian Army (CAF)", img: "img/uniforms/CAF_Snowman.webp" }, // Ggf. Snow?
+            { name: "Turkish Land Forces (TLF)", img: "img/uniforms/Blog_tlf2.webp" },
+            { name: "PMC (Western Contractors)", img: "img/uniforms/PMC.jpg" }, // Oft BLUFOR-aligned
 
-            // OPFOR / INDEP
-            { name: "Russian Ground Forces", img: "img/uniforms/rus_ground.webp" },
-            { name: "Russian VDV (Airborne)", img: "img/uniforms/rus_vdv.webp" },
-            { name: "Middle Eastern Alliance (MEA)", img: "img/uniforms/mea.webp" },
-            { name: "Insurgents", img: "img/uniforms/insurgents.webp" },
-            { name: "Irregular Militia", img: "img/uniforms/militia.webp" },
-            { name: "PLA (China)", img: "img/uniforms/pla.webp" },
-            { name: "PLA Navy / Marines", img: "img/uniforms/pla_navy.webp" },
-            { name: "VDV (Desert)", img: "img/uniforms/rus_vdv_desert.webp" }
+            // OPFOR (Osten / Gegner)
+            { name: "Russian Ground Forces (RGF)", img: "img/uniforms/Squad_Russian_Soldiers_3.webp" },
+            { name: "PLA (China)", img: "img/uniforms/Blog_PLA-Keyart.webp" },
+            { name: "Middle Eastern Alliance (MEA)", img: "img/uniforms/MEA7-700x394.webp" },
+            { name: "Insurgents", img: "img/uniforms/New_Insurgents_1_Jan_2018.webp" },
+            { name: "Irregular Militia", img: "img/uniforms/Militia.webp" },
+            
+            // INDEPENDENT / ANDERE
+            { name: "Ukraine Ground Forces", img: "img/uniforms/Ukraine.webp" }, // Mod Fraktion?
+            { name: "US Marines (Standard)", img: "img/uniforms/Marines.webp" }
         ];
 
         // ======================================================
@@ -230,7 +233,7 @@
         }
 
         function nextQuestion() {
-            if (currentQuestion >= 10 || currentQuestion >= uniforms.length) {
+            if (currentQuestion >= 15 || currentQuestion >= uniforms.length) {
                 endGame();
                 return;
             }
@@ -239,7 +242,7 @@
             feedbackEl.innerText = "";
             const target = questionPool[currentQuestion];
             
-            progressEl.innerText = `Uniform ${currentQuestion + 1} / 10`;
+            progressEl.innerText = `Soldat ${currentQuestion + 1} / 15`;
             
             imgEl.onerror = function() { this.src = 'https://via.placeholder.com/300x500?text=Bild+fehlt'; };
             imgEl.src = target.img;
@@ -312,12 +315,13 @@
             document.getElementById('final-score').innerText = score;
             
             let msg = "Blue-on-Blue Gefahr!";
-            if (score > 500) msg = "Passabel. Aber pass auf im Wald.";
             if (score > 1000) msg = "Gutes Auge, Soldat.";
-            if (score > 1500) msg = "Adlerauge! Du erkennst jeden Pixel.";
+            if (score > 2000) msg = "Adlerauge! Du erkennst jeden Pixel.";
             
             document.getElementById('final-msg').innerText = msg;
         }
     </script>
+</body>
+</html>
 </body>
 </html>
