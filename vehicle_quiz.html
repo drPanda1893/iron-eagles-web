@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle ID Quiz | Iron Eagles</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Oswald:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #5D7347;
+            --dark: #0f1012;
+            --card: #1a1b1e;
+            --text: #fff;
+            --danger: #e74c3c;
+            --success: #2ecc71;
+            --us-blue: #3498db;
+            --rus-red: #e74c3c;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--dark);
+            color: var(--text);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 { font-family: 'Oswald', sans-serif; text-transform: uppercase; color: var(--primary); margin-bottom: 10px; }
+        
+        .back-btn {
+            align-self: flex-start;
+            color: #888;
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .back-btn:hover { color: var(--primary); }
+
+        /* QUIZ CONTAINER */
+        .quiz-card {
+            background: var(--card);
+            border: 1px solid #333;
+            border-radius: 15px;
+            padding: 30px;
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* IMAGE AREA */
+        .vehicle-img-container {
+            width: 100%;
+            height: 300px;
+            background: #000;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 2px solid #333;
+        }
+        
+        .vehicle-img-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        /* OPTIONS */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .option-btn {
+            background: #25262b;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: bold;
+        }
+
+        .option-btn:hover {
+            background: #333;
+            border-color: var(--primary);
+        }
+
+        .option-btn.correct { background: var(--success); border-color: var(--success); }
+        .option-btn.wrong { background: var(--danger); border-color: var(--danger); }
+
+        /* FACTION BUTTONS (Alternative Mode) */
+        .faction-mode .option-btn.us { border-left: 5px solid var(--us-blue); }
+        .faction-mode .option-btn.rus { border-left: 5px solid var(--rus-red); }
+
+        /* STATUS BAR */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 15px;
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .score-display { color: var(--primary); font-size: 1.2rem; }
+
+        /* START / END SCREENS */
+        .screen { display: none; }
+        .screen.active { display: block; }
+
+        .start-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            text-transform: uppercase;
+        }
+        .start-btn:hover { transform: scale(1.05); box-shadow: 0 0 15px var(--primary-glow); }
+
+        /* TIMER BAR */
+        .timer-container {
+            height: 5px;
+            background: #333;
+            width: 100%;
+            position: absolute;
+            top: 0; left: 0;
+        }
+        .timer-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 100%;
+            transition: width 1s linear;
+        }
+
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Zurück zum HQ</a>
+    
+    <h1><i class="fas fa-binoculars"></i> Vehicle ID Trainer</h1>
+
+    <div class="quiz-card">
+        
+        <!-- START SCREEN -->
+        <div id="start-screen" class="screen active">
+            <h2>Erkennst du den Feind?</h2>
+            <p style="color: #aaa; margin: 20px 0;">
+                In Squad ist Zögern tödlich. Aber auf eigene Leute schießen ist schlimmer.<br>
+                Teste dein Wissen über Fahrzeug-Silhouetten.
+            </p>
+            <div style="margin-bottom: 30px;">
+                <p><i class="fas fa-clock"></i> 10 Sekunden pro Bild</p>
+                <p><i class="fas fa-trophy"></i> Highscore knacken</p>
+            </div>
+            <button class="start-btn" onclick="startQuiz()">Mission Starten</button>
+        </div>
+
+        <!-- GAME SCREEN -->
+        <div id="game-screen" class="screen">
+            <div class="timer-container"><div id="timer-bar" class="timer-bar"></div></div>
+            
+            <div class="status-bar">
+                <span id="progress-text">Fahrzeug 1/10</span>
+                <span class="score-display">Score: <span id="score">0</span></span>
+            </div>
+
+            <div class="vehicle-img-container">
+                <img id="vehicle-img" src="" alt="Vehicle">
+            </div>
+
+            <div class="options-grid" id="options-container">
+                <!-- Buttons werden hier generiert -->
+            </div>
+            <div id="feedback-text" style="height: 20px; font-weight: bold; margin-top: 10px;"></div>
+        </div>
+
+        <!-- END SCREEN -->
+        <div id="end-screen" class="screen">
+            <h2>Mission Debrief</h2>
+            <div style="font-size: 3rem; color: var(--primary); margin: 20px 0;" id="final-score">0</div>
+            <p id="final-msg" style="color: #ccc; margin-bottom: 30px;">Nicht schlecht, Soldat.</p>
+            <button class="start-btn" onclick="startQuiz()">Nochmal</button>
+        </div>
+
+    </div>
+
+    <script>
+        // --- KONFIGURATION: HIER DEINE BILDER EINTRAGEN ---
+        // name: Was auf dem Button steht
+        // img: Pfad zum Bild (im 'img/vehicles/' Ordner ablegen!)
+        // type: Z.B. 'tank', 'apc', 'logi' (optional für später)
+        const vehicles = [
+            { name: "M1A2 Abrams (US)", img: "img/vehicles/abrams.jpg", type: "tank" },
+            { name: "T-72B3 (RUS)", img: "img/vehicles/t72.jpg", type: "tank" },
+            { name: "BTR-82A (RUS)", img: "img/vehicles/btr82a.jpg", type: "apc" },
+            { name: "Stryker (US)", img: "img/vehicles/stryker.jpg", type: "apc" },
+            { name: "LAV-6 (CAF)", img: "img/vehicles/lav6.jpg", type: "apc" },
+            { name: "BMP-2 (MEA)", img: "img/vehicles/bmp2.jpg", type: "ifv" },
+            { name: "Bradley M2A3 (US)", img: "img/vehicles/bradley.jpg", type: "ifv" },
+            { name: "Tigr (RUS)", img: "img/vehicles/tigr.jpg", type: "light" },
+            { name: "M-ATV (US)", img: "img/vehicles/matv.jpg", type: "light" },
+            { name: "Logi Truck (URAL)", img: "img/vehicles/ural_logi.jpg", type: "logi" }
+        ];
+
+        // Globale Variablen
+        let currentQuestion = 0;
+        let score = 0;
+        let timer;
+        let timeLeft = 10;
+        let gameActive = false;
+        let questionPool = [];
+
+        // DOM Elemente
+        const startScreen = document.getElementById('start-screen');
+        const gameScreen = document.getElementById('game-screen');
+        const endScreen = document.getElementById('end-screen');
+        const imgEl = document.getElementById('vehicle-img');
+        const optionsContainer = document.getElementById('options-container');
+        const scoreEl = document.getElementById('score');
+        const progressEl = document.getElementById('progress-text');
+        const timerBar = document.getElementById('timer-bar');
+        const feedbackEl = document.getElementById('feedback-text');
+
+        function startQuiz() {
+            // Reset
+            score = 0;
+            currentQuestion = 0;
+            scoreEl.innerText = '0';
+            questionPool = [...vehicles].sort(() => 0.5 - Math.random()); // Mischen
+            
+            // Screens umschalten
+            startScreen.classList.remove('active');
+            endScreen.classList.remove('active');
+            gameScreen.classList.add('active');
+
+            nextQuestion();
+        }
+
+        function nextQuestion() {
+            if (currentQuestion >= 10 || currentQuestion >= vehicles.length) {
+                endGame();
+                return;
+            }
+
+            gameActive = true;
+            feedbackEl.innerText = "";
+            const target = questionPool[currentQuestion];
+            
+            // UI Update
+            progressEl.innerText = `Fahrzeug ${currentQuestion + 1} / 10`;
+            imgEl.src = target.img;
+
+            // Timer Reset
+            timeLeft = 10;
+            timerBar.style.transition = 'none';
+            timerBar.style.width = '100%';
+            setTimeout(() => {
+                timerBar.style.transition = 'width 10s linear';
+                timerBar.style.width = '0%';
+            }, 10);
+
+            clearInterval(timer);
+            timer = setInterval(() => {
+                timeLeft--;
+                if (timeLeft <= 0) {
+                    checkAnswer(null, target); // Zeit abgelaufen
+                }
+            }, 1000);
+
+            // Antworten generieren (1 Richtig, 3 Falsch)
+            let options = [target];
+            const distractors = vehicles.filter(v => v.name !== target.name).sort(() => 0.5 - Math.random()).slice(0, 3);
+            options = options.concat(distractors).sort(() => 0.5 - Math.random());
+
+            // Buttons rendern
+            optionsContainer.innerHTML = '';
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt.name;
+                btn.onclick = () => checkAnswer(opt, target, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selected, correct, btnElement) {
+            if (!gameActive) return;
+            gameActive = false;
+            clearInterval(timer);
+
+            const buttons = optionsContainer.querySelectorAll('button');
+
+            if (selected && selected.name === correct.name) {
+                // Richtig
+                score += 100 + (timeLeft * 10); // Bonus für Schnelligkeit
+                scoreEl.innerText = score;
+                btnElement.classList.add('correct');
+                feedbackEl.innerText = "KORREKT!";
+                feedbackEl.style.color = "var(--success)";
+            } else {
+                // Falsch oder Zeit abgelaufen
+                if (btnElement) btnElement.classList.add('wrong');
+                // Richtigen Button zeigen
+                buttons.forEach(b => {
+                    if (b.innerText === correct.name) b.classList.add('correct');
+                });
+                feedbackEl.innerText = "FALSCH! Das war ein " + correct.name;
+                feedbackEl.style.color = "var(--danger)";
+            }
+
+            // Nächste Frage nach 2 Sekunden
+            setTimeout(() => {
+                currentQuestion++;
+                nextQuestion();
+            }, 2000);
+        }
+
+        function endGame() {
+            gameScreen.classList.remove('active');
+            endScreen.classList.add('active');
+            document.getElementById('final-score').innerText = score;
+            
+            let msg = "Zurück in die Grundausbildung, Soldat.";
+            if (score > 500) msg = "Gute Arbeit. Du bist bereit für das Feld.";
+            if (score > 1000) msg = "Hervorragend! Du kennst jedes Detail.";
+            if (score > 1500) msg = "Adlerauge! Du solltest Squad Lead werden.";
+            
+            document.getElementById('final-msg').innerText = msg;
+        }
+    </script>
+</body>
+</html>
